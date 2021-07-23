@@ -7,6 +7,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import { mainListItems, secondaryListItems } from '../../listItems';
+import { CompanyListScreen } from '../../pages/CompanyListScreen';
 
 export default function Navbar () {
     const classes = useStyles();
@@ -95,6 +96,7 @@ export default function Navbar () {
         {renderMenu}
         <main className={classes.content}>
             <div className={classes.appBarSpacer} />
+            <CompanyListScreen />
         </main>
     </div>
 }
