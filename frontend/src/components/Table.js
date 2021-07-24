@@ -1,9 +1,20 @@
 import React, { useState } from 'react';
-import useStyles from './TableStyles';
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from '@material-ui/core';
+import { makeStyles, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from '@material-ui/core';
+
+const useStyles = makeStyles({
+    root: {
+        width: '90%',
+        margin: '50px auto'
+    },
+    container: {
+        maxHeight: '100%',
+    },
+});
 
 
 export default function TableView(props) {
+    console.log(props);
+    console.log(props.rows);
     const columns = props.columns;
     const rows = props.rows;
     const classes = useStyles();
