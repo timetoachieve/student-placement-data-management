@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { useState } from 'react';
+import React, { useMemo, forwardRef, useState } from 'react';
 import { makeStyles, ListItem, ListItemIcon, ListItemText, CssBaseline, AppBar, Toolbar, Typography, Menu, IconButton, Divider, Badge, Drawer, List, MenuItem } from '@material-ui/core';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import DashboardIcon from '@material-ui/icons/Dashboard';
@@ -8,6 +8,8 @@ import MenuIcon from '@material-ui/icons/Menu';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import ScheduleIcon from '@material-ui/icons/Schedule';
+import { Link as RouterLink } from 'react-router-dom';
+import { ROOT, SCHEDULE } from './../navigation/CONSTANTS';
 
 const drawerWidth = 240;
 
@@ -90,29 +92,45 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const mainListItems = <div>
-        <ListItem button>
-            <ListItemIcon>
-                <DashboardIcon />
-            </ListItemIcon>
-            <ListItemText primary="Dashboard" />
-        </ListItem>
-        <ListItem button>
-            <ListItemIcon>
-                <ScheduleIcon />
-            </ListItemIcon>
-            <ListItemText primary="Schedule" />
-        </ListItem>
-    </div>;
+function ListItemLink (props) {
+    const { icon, primary, to } = props;
+    const renderLink = useMemo(
+        () => forwardRef((itemProps, ref) => <RouterLink to={to} ref={ref} {...itemProps} />),
+        [to],
+    )
 
-const secondaryListItems = <div>
-        <ListItem button>
-            <ListItemIcon>
-                <ExitToAppIcon />
-            </ListItemIcon>
-            <ListItemText primary="Logout" />
-        </ListItem>
-    </div>;
+    return (
+        <li>
+            <ListItem button component={renderLink}>
+                { icon ? <ListItemIcon>{ icon }</ListItemIcon> : null }
+                <ListItemText primary={primary} />
+            </ListItem>
+        </li>
+    )
+}
+
+const mainList = [
+    {
+        icon: <DashboardIcon />,
+        primary: 'DASHBOARD',
+        to: ROOT
+    },
+    {
+        icon: <ScheduleIcon />,
+        primary: 'Schedule',
+        to: SCHEDULE
+    }
+];
+
+const secondaryList = [
+    {
+        
+        icon: <ExitToAppIcon />,
+        primary: 'Logout',
+        to: ROOT
+    }
+
+]
 
 export default function Navbar (props) {
     const classes = useStyles();
@@ -170,11 +188,15 @@ return <div className={classes.root}>
             </div>
             <Divider />
             <List>
-                { mainListItems }
+                {
+                    mainList.map(item => <ListItemLink key={item.primary} to={item.to} icon={item.icon} primary={item.primary} />)
+                }
             </List>
             <Divider />
             <List>
-                { secondaryListItems }
+                {
+                    secondaryList.map(item => <ListItemLink key={item.primary} to={item.to} icon={item.icon} primary={item.primary} />)
+                }
             </List>
         </Drawer>
         { renderMenu }
