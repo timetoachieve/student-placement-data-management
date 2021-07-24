@@ -1,11 +1,14 @@
-import { CompanyListScreen } from 'pages';
+import { RouterConfig } from 'navigation/RouterConfig';
+import { BrowserRouter } from 'react-router-dom';
 import './App.css';
 
 function App() {
     return (
-        <div className="App">
-            <CompanyListScreen />   
-        </div>
+        <BrowserRouter>
+            <div className="App">
+                <RouterConfig />
+            </div>
+        </BrowserRouter>
     );
 }
 
