@@ -13,8 +13,6 @@ const useStyles = makeStyles({
 
 
 export default function TableView(props) {
-    console.log(props);
-    console.log(props.rows);
     const columns = props.columns;
     const rows = props.rows;
     const classes = useStyles();

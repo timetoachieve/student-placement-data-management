@@ -1,50 +1,36 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Navbar, TableView } from 'components';
-
-const columns = [
-    {
-        id: 'name',
-        label: 'Company Name',        
-    },
-    {
-        id: 'departments',
-        label: 'Departments'
-    },
-    {
-        id: 'cgpa',
-        label: 'CGPA'
-    },
-    {
-        id: 'backlog',
-        label: 'Backlog'
-    },
-    {
-        id: 'stipend',
-        label: 'Stipend'
-    },
-    {
-        id: 'deadline',
-        label: 'Last Date',
-    },
-    {
-        id: 'status',
-        label: 'Status'
-    },
-    {
-        id: 'description',
-        label: 'Description'
-    },
-    {
-        id: 'apply',
-        label: 'Apply'
-    }
-];
-
-const rows = [
-];
+import axios from 'axios';
 
 export function CompanyListScreen () {
+    const [companies, setCompanies] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(false);
+
+    useEffect(() => {
+        const fetchData = async () => {            
+            try {
+                setLoading(true);
+                const { data } = await axios.get('/api/companies');
+                setLoading(false);
+                setCompanies(data);
+            } catch (err) {
+                setError(err.message);
+                setLoading(false);
+            }
+        };
+        fetchData();
+    }, []);
+
+    console.log(companies);
+    const { columns, rows } = companies;
+    console.log(columns);
+    console.log(rows);
+
     return <Navbar>
-        <TableView columns={columns} rows={rows} />
+        {
+            loading ? 'Loading...' : error ? error :
+            <TableView columns={columns} rows={rows} />
+        }
     </Navbar>
 }
