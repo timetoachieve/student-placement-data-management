@@ -29,7 +29,7 @@ export default function TableView(props) {
             <Table stickyHeader aria-label='table'>
                 <TableHead>
                     <TableRow>
-                        {columns.map(column => (
+                        {columns && columns.map(column => (
                             <TableCell
                                 key={column.id}
                                 align={column.align}
@@ -41,9 +41,9 @@ export default function TableView(props) {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                    {rows && rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
                         return <TableRow hover role='checkbox' tabIndex={-1} key={row.code}>
-                            {columns.map((column) => {
+                            {columns && columns.map((column) => {
                                 const value = row[column.id];
                                 return <TableCell key={column.id} align={column.align}>
                                     {column.format && typeof value === 'number' ? column.format(value) : value}
@@ -57,7 +57,7 @@ export default function TableView(props) {
         <TablePagination
             rowsPerPageOptions={[10, 25, 100]}
             component='div'
-            count={rows.length}
+            count={rows && rows.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
