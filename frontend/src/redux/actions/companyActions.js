@@ -1,11 +1,11 @@
 import axios from 'axios';
-import { COMPANY_LIST_FAIL, COMPANY_LIST_REQUEST, COMPANY_LIST_SUCCESS } from 'redux/constants/companyConstants';
+import { COMPANY_LIST_FAIL, COMPANY_LIST_REQUEST, COMPANY_LIST_SUCCESS, SCHEDULE_LIST_FAIL, SCHEDULE_LIST_REQUEST } from 'redux/constants/companyConstants';
+import { SCHEDULE_LIST_SUCCESS } from './../constants/companyConstants';
 
 const listCompanies = () => async (dispatch) => {
     dispatch({ type: COMPANY_LIST_REQUEST });
     try {
         const { data } = await axios.get('/api/companies');
-        console.log('data', data);
         dispatch({
             type: COMPANY_LIST_SUCCESS,
             payload: data
@@ -18,6 +18,23 @@ const listCompanies = () => async (dispatch) => {
     }
 };
 
+const listSchedule = () => async (dispatch) => {
+    dispatch({ type: SCHEDULE_LIST_REQUEST });
+    try {
+        const { data } = await axios.get('/api/schedules');
+        dispatch({
+            type: SCHEDULE_LIST_SUCCESS,
+            payload: data            
+        });
+    } catch (error) {
+        dispatch({
+            type: SCHEDULE_LIST_FAIL,
+            payload: error.message
+        });
+    }
+};
+
 export {
-    listCompanies
+    listCompanies,
+    listSchedule
 }
