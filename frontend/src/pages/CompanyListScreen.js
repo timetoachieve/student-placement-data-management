@@ -1,36 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Navbar, TableView } from 'components';
-import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+import { listCompanies } from 'redux/actions/companyActions';
 
 export function CompanyListScreen () {
-    const [companies, setCompanies] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(false);
+    const dispatch = useDispatch();
+    const companyList = useSelector((state) => state.companyList);
+    const { loading, error, companies } = companyList;
 
     useEffect(() => {
-        const fetchData = async () => {            
-            try {
-                setLoading(true);
-                const { data } = await axios.get('/api/companies');
-                setLoading(false);
-                setCompanies(data);
-            } catch (err) {
-                setError(err.message);
-                setLoading(false);
-            }
-        };
-        fetchData();
-    }, []);
-
-    console.log(companies);
-    const { columns, rows } = companies;
-    console.log(columns);
-    console.log(rows);
+        dispatch(listCompanies());
+    }, [dispatch]);
 
     return <Navbar>
         {
             loading ? 'Loading...' : error ? error :
-            <TableView columns={columns} rows={rows} />
+            <TableView columns={companies.columns} rows={companies.rows} />
         }
     </Navbar>
 }
